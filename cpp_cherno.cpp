@@ -15,7 +15,7 @@ class Entity{
              std::cout << "Destroyed Entity" << std::endl;
         }
         void Print(){
-            std::cout << "Check Print " << std::endl;
+            std::cout << "Check Something now " << std::endl;
         }
 };
 
