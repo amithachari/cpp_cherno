@@ -2,6 +2,7 @@
 #include<string>
 #include<stdlib.h>
 #include <memory>
+#include <ryml.hpp>
 
 class Entity{
     private:
