@@ -1,42 +1,46 @@
 #include<iostream>
-#include<string>
-#include<stdlib.h>
-#include <memory>
-#include <ryml.hpp>
-
-class Entity{
+#include <cstring>
+class String{
     private:
-
+        char* m_Buffer;
+        unsigned int m_Size;
     public:
-        int x, y;
-        Entity(){
-             std::cout << "Created Entity" << std::endl;
+        String(const char* string){
+            m_Size = strlen(string);
+            m_Buffer = new char[m_Size];
+            memcpy(m_Buffer, string, m_Size+1);
         }
-        ~Entity(){
-             std::cout << "Destroyed Entity" << std::endl;
+
+        String(const String& other): m_Size(other.m_Size){
+            std::cout << "Copied String " << std::endl;
+            m_Buffer = new char[m_Size + 1];
+            memcpy(m_Buffer, other.m_Buffer, m_Size + 1);
         }
-        void Print(){
-            std::cout << "Check Something now " << std::endl;
+
+        ~String(){
+            delete[] m_Buffer;
         }
+
+        char& operator[](unsigned int index){
+            return m_Buffer[index];
+        }
+        friend std::ostream& operator << (std::ostream& stream, const String& string);
 };
 
-class ScopedPtr{
-    private:
-        Entity* m_Ptr;
-    public:
-        ScopedPtr(Entity* ptr): m_Ptr(ptr){
-            
-        }
-        ~ScopedPtr(){
-            delete m_Ptr;
-        }
-};
+std::ostream& operator << (std::ostream& stream, const String& string){
+    stream << string.m_Buffer;
+    return stream;
+}
 
+void PrintString(const String& string){
+    std::cout << string << std::endl;
+}
 
 int main(){
-    {
-        std::unique_ptr<Entity> entity = std::make_unique<Entity>();
-        entity->Print();
-    }
+    String string = "Cherno";
+    String second = string;
+    second[2] = 'a';
+    PrintString(string);
+    PrintString(second);
     return 0;
 }
